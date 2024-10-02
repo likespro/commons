@@ -88,25 +88,17 @@ class CryptoUtils {
         fun String.signerAddressECDSA(originalMessage: String): String {
             var signature = this
             return try {
-                // Remove the "0x" prefix if it exists
                 if (signature.startsWith("0x")) {
                     signature = signature.substring(2)
                 }
-                // Convert the signature to bytes
                 val signatureBytes = Numeric.hexStringToByteArray(signature)
-                // Extract r, s and v from the signature
                 val signatureData = Sign.SignatureData(
                     signatureBytes[64],
                     Arrays.copyOfRange(signatureBytes, 0, 32),
                     Arrays.copyOfRange(signatureBytes, 32, 64)
                 )
-                // Recover the public key from the signature
                 val publicKey: BigInteger = Sign.signedPrefixedMessageToKey(originalMessage.toByteArray(), signatureData)
-                // Compute the address from the public key
-                val recoveredAddress = "0x" + Keys.getAddress(publicKey)
-
-                // Compare the recovered address to the expected address
-                recoveredAddress
+                "0x" + Keys.getAddress(publicKey)
             } catch (e: Exception) {
                 e.printStackTrace()
                 "0x0"

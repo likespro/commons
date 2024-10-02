@@ -33,5 +33,4 @@ class TasksQueue(val collection: MongoCollection<Document>){
                 .append("processingBy", workerName)),
             FindOneAndUpdateOptions().sort(Document().append("priority", 1).append("createdAt", 1)))).block()
     }
-    //fun pushTask(task: String, payload: Document, priority: Long = 0L, lockedUntil: Long = 0L)
 }
