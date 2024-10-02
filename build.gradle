@@ -20,47 +20,8 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.13'
     implementation 'org.json:json:20230227'
     implementation 'com.google.code.gson:gson:2.8.9'
-    testImplementation platform('org.junit:junit-bom:5.9.1')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-}
-
-publishing{
-    publications{
-        maven(MavenPublication){
-            groupId = "eth.likespro"
-            artifactId = "commons"
-            version = "1.0.0"
-            from components.java
-
-            pom {
-                name = 'likespro Commons'
-                description = 'Useful methods and models for java/kotlin projects.'
-                url = 'https://github.com/nowshad-hasan/solid-potato'
-                inceptionYear = '2022'
-
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://opensource.org/licenses/MIT'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'likespro'
-                        name = 'Like Pro'
-                        email = 'likespro.eth@gmail.com'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git:github.com/nowshad-hasan/solid-potato.git'
-                    developerConnection = 'scm:git:ssh://github.com/nowshad-hasan/solid-potato.git'
-                    url = 'https://github.com/nowshad-hasan/solid-potato'
-                }
-            }
-        }
-    }
 }
 
 test {
