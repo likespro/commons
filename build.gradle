@@ -40,22 +40,26 @@ jar{
         attributes 'Premain-Class': 'eth.likespro.commons.ObjectSizeFetcher'
     }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from { (configurations.runtimeClasspath).collect { println(it.name); if(it.name == "gson-2.8.9.jar" || it.name == "commons-codec-1.13.jar") zipTree(it) else null } } {
+    /*from { (configurations.runtimeClasspath).collect { println(it.name); if(it.name == "gson-2.8.9.jar" || it.name == "commons-codec-1.13.jar") zipTree(it) else null } } {
         exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
-    }
+    }*/
     enabled = true
 }
-task customFatJar(type: Jar) {
+def fatJar  =tasks.register('fatJar', Jar) {
     manifest {
         attributes 'Premain-Class': 'eth.likespro.commons.ObjectSizeFetcher'
     }
+    archiveBaseName = 'fat-commons'
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from { (configurations.runtimeClasspath).collect { it.isDirectory() ? it : zipTree(it) } } {
+    from { (configurations.runtimeClasspath).collect { println("Packing "+it.name+" into fatJar"); it.isDirectory() ? it : zipTree(it) } } {
         exclude 'META-INF/*.RSA', 'META-INF/*.SF', 'META-INF/*.DSA'
     }
     exclude("META-INF/*.RSA", "META-INF/*.DSA", "META-INF/*.SF")
     with jar
     exclude("META-INF/*.RSA", "META-INF/*.DSA", "META-INF/*.SF")
+}
+tasks.build {
+    dependsOn(fatJar)
 }
 java{
     withJavadocJar()
