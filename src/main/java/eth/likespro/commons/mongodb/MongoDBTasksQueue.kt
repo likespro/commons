@@ -1,14 +1,12 @@
 package eth.likespro.commons.mongodb
 
-import com.mongodb.client.model.Filters.and
-import com.mongodb.client.model.Filters.eq
 import com.mongodb.client.model.FindOneAndUpdateOptions
 import com.mongodb.client.result.InsertOneResult
 import com.mongodb.reactivestreams.client.MongoCollection
 import org.bson.Document
 import reactor.core.publisher.Mono
 
-class TasksQueue(val collection: MongoCollection<Document>){
+class MongoDBTasksQueue(val collection: MongoCollection<Document>){
     fun pushTask(task: String, payload: Document, priority: Long = 0L, lockedUntil: Long = 0L): Mono<InsertOneResult?> {
         return Mono.from(collection.insertOne(
             Document()
@@ -25,7 +23,10 @@ class TasksQueue(val collection: MongoCollection<Document>){
     }
     fun getTask(task: String, workerName: String = "default"): Document?{
         return Mono.from(collection.findOneAndUpdate(
-            Document("status", "pending").append("lockedAt", null),
+            Document()
+                .append("task", task)
+                .append("status", "pending")
+                .append("lockedAt", null),
             Document("\$set", Document()
                 .append("status", "processing")
                 .append("lockedAt", System.currentTimeMillis())

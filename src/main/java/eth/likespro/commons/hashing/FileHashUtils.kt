@@ -1,14 +1,13 @@
-package eth.likespro.commons
+package eth.likespro.commons.hashing
 
-import eth.likespro.commons.NumericUtils.Companion.toHexString
+import eth.likespro.commons.numeric.NumericUtils.Companion.toHexString
 import java.io.BufferedInputStream
 import java.io.File
-import java.io.FileInputStream
 import java.security.MessageDigest
 
-
-class FileUtils {
+class FileHashUtils {
     companion object{
+        @JvmStatic
         fun File.sha256(bufferSize: Int = 8*1024*1024): String{
             val buffer = ByteArray(bufferSize)
             var count: Int

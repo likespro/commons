@@ -1,4 +1,4 @@
-package eth.likespro.commons
+package eth.likespro.commons.console
 
 class ConsoleUtils {
     companion object{
@@ -22,8 +22,8 @@ class ConsoleUtils {
         }
         fun colorIndicator(progress: Long, total: Long): String{
             val percentage = progress*100/total
-            return if(percentage < 50)ANSI_GREEN
-            else if(percentage < 90)ANSI_YELLOW
+            return if(percentage < 50) ANSI_GREEN
+            else if(percentage < 90) ANSI_YELLOW
             else ANSI_RED
         }
         fun clearConsole(windowsMethod: Boolean = true){

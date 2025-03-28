@@ -5,7 +5,7 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Build Test
+name: Main Branch Workflow
 
 on:
   push:
@@ -27,8 +27,6 @@ jobs:
         java-version: '16'
         distribution: 'temurin'
 
-    # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
-    # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
 
@@ -38,19 +36,8 @@ jobs:
     - name: Upload build reports
       uses: actions/upload-artifact@v4
       with:
-        name: build-files
+        name: built-jars
         path: build/libs/
-
-    # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
-    # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
-    #
-    # - name: Setup Gradle
-    #   uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-    #   with:
-    #     gradle-version: '8.9'
-    #
-    # - name: Build with Gradle 8.9
-    #   run: gradle build
 
   dependency-submission:
     runs-on: ubuntu-latest
@@ -78,7 +65,7 @@ jobs:
       pull-requests: write
       checks: write
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
           fetch-depth: 0  # a full history is required for pull request analysis
@@ -89,3 +76,44 @@ jobs:
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1246384435 }}
           QODANA_ENDPOINT: 'https://qodana.cloud'
+
+  generate-git-badges:
+    name: Generate Git Badges
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Output git info
+        id: git_info
+        run: |
+          function format_size { echo $(numfmt --to iec --suffix B $1); }
+          function format_number { LC_ALL=en_US.UTF-8 printf "%'d\n" $1; }
+          echo "file_count=$(format_number $(git ls-files | wc -l))" >> $GITHUB_OUTPUT
+          echo "lines_of_code=$(find . -type f -name "*.kt" -exec wc -l {} + | awk '{s+=$1} END {print s}')" >> $GITHUB_OUTPUT
+          git gc
+          echo "size=$(format_size $(($(git count-objects -v | grep 'size-pack: ' | sed 's/size-pack: //g' | tr -d '\n') * 1024)))" >> $GITHUB_OUTPUT
+        shell: bash
+
+      - name: Generate-Badge
+        uses: likespro/generate-badge@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filename: |
+            (
+              "git-size"
+              "git-file-count"
+              "git-lines-of-code"
+            )
+          label: ("size" "files" "lines-of-code")
+          message: |
+            (
+              "${{ steps.git_info.outputs.size }}"
+              "${{ steps.git_info.outputs.file_count }}"
+              "${{ steps.git_info.outputs.lines_of_code }}"
+            )
+          namedLogo: ("git" "git" "git")
+          color: ("f1502f" "f1502f" "f1502f")

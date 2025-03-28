@@ -1,4 +1,4 @@
-package eth.likespro.commons
+package eth.likespro.commons.multithreading
 
 import kotlin.math.max
 

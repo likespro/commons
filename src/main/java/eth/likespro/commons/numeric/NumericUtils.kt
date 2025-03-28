@@ -1,4 +1,4 @@
-package eth.likespro.commons
+package eth.likespro.commons.numeric
 
 import org.apache.commons.codec.binary.Hex
 import java.math.BigDecimal
@@ -13,12 +13,14 @@ class NumericUtils {
             return bd.toDouble()
         }
         fun Int.toReadableInformationSize(places: Int = 1): String{
-            return if(this >= 1024*1024) (this/1024.0/1024.0).round(places).toString()+" MiB"
+            return if(this >= 1024*1024*1024) (this/1024.0/1024.0/1024.0).round(places).toString()+" GiB"
+            else if(this >= 1024*1024) (this/1024.0/1024.0).round(places).toString()+" MiB"
             else if(this >= 1024) (this/1024.0).round(1).toString()+" KiB"
             else "$this B"
         }
         fun Long.toReadableInformationSize(places: Int = 1): String{
-            return if(this >= 1024*1024) (this/1024.0/1024.0).round(places).toString()+" MiB"
+            return if(this >= 1024*1024*1024) (this/1024.0/1024.0/1024.0).round(places).toString()+" GiB"
+            else if(this >= 1024*1024) (this/1024.0/1024.0).round(places).toString()+" MiB"
             else if(this >= 1024) (this/1024.0).round(1).toString()+" KiB"
             else "$this B"
         }
