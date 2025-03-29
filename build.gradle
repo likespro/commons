@@ -7,11 +7,44 @@ plugins {
 group = 'eth.likespro'
 version = '1.0.0'
 
-sourceCompatibility = 16
-targetCompatibility = 16
+sourceCompatibility = 17
+targetCompatibility = 17
 
 repositories {
     mavenCentral()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'commons'
+            groupId = group
+        }
+    }
+
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/" + System.getenv("REPO"))
+
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("TOKEN")
+            }
+        }
+//        if(System.getenv("SECOND_PUBLISH_REPO") != null) {
+//            maven {
+//                name = "GitHubPackagesSecondPublish"
+//                url = uri("https://maven.pkg.github.com/" + System.getenv("SECOND_PUBLISH_REPO"))
+//
+//                credentials {
+//                    username = System.getenv("SECOND_PUBLISH_USERNAME")
+//                    password = System.getenv("SECOND_PUBLISH_TOKEN")
+//                }
+//            }
+//        }
+    }
 }
 
 dependencies {
@@ -43,11 +76,11 @@ test {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = '16'
+    kotlinOptions.jvmTarget = '17'
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = '16'
+    kotlinOptions.jvmTarget = '17'
 }
 jar {
     manifest {
