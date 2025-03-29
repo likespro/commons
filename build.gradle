@@ -75,6 +75,16 @@ def fatJar = tasks.register('fatJar', Jar) {
 tasks.build {
     dependsOn(fatJar)
 }
+tasks.register('printProjectName') {
+    doLast {
+        println rootProject.name
+    }
+}
+tasks.register('printProjectVersion') {
+    doLast {
+        println version
+    }
+}
 java{
     withJavadocJar()
     withSourcesJar()

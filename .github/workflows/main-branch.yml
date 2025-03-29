@@ -14,7 +14,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build-jars:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -33,11 +33,59 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew build
 
-    - name: Upload build reports
+    - name: Extract project name from Gradle
+      id: extract_name
+      run: |
+        PROJECT_NAME=$(./gradlew -q printProjectName)
+        echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_ENV
+
+    - name: Extract version from Gradle
+      id: get-version
+      run: |
+        VERSION=$(./gradlew -q printProjectVersion)
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+    - name: Upload jars
       uses: actions/upload-artifact@v4
       with:
-        name: built-jars
-        path: build/libs/
+        name: ${{ env.PROJECT_NAME }}-${{ env.VERSION }}-jars
+        path: build/libs/*.jar
+
+  create-release:
+    runs-on: ubuntu-latest
+    needs:
+      - build-jars
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract project name from Gradle
+        id: extract_name
+        run: |
+          PROJECT_NAME=$(./gradlew -q printProjectName)
+          echo "PROJECT_NAME=${PROJECT_NAME}" >> $GITHUB_ENV
+
+      - name: Extract version from Gradle
+        id: get-version
+        run: |
+          VERSION=$(./gradlew -q printProjectVersion)
+          echo "VERSION=${VERSION}" >> $GITHUB_ENV
+
+      - name: Download jars
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ env.PROJECT_NAME }}-${{ env.VERSION }}-jars
+          path: artifacts/
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: true
+        with:
+          tag_name: ${{ env.VERSION }}
+          body_path: ./CHANGELOG.md
+          files: |
+            artifacts/*
 
   dependency-submission:
     runs-on: ubuntu-latest
@@ -56,26 +104,6 @@ jobs:
     # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
     - name: Generate and submit dependency graph
       uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
-
-
-  qodana:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-      checks: write
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}  # to check out the actual pull request commit, not the merge commit
-          fetch-depth: 0  # a full history is required for pull request analysis
-      - name: 'Qodana Scan'
-        uses: JetBrains/qodana-action@v2024.1
-        with:
-          pr-mode: false
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN_1246384435 }}
-          QODANA_ENDPOINT: 'https://qodana.cloud'
 
   generate-git-badges:
     name: Generate Git Badges
