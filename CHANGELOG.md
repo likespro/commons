@@ -1,1 +1,1 @@
-Add ClassTypeAdapter for Class serialization and deserialization
+Refactor ObjectEncoding to improve type handling

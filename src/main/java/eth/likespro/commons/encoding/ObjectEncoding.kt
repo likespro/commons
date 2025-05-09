@@ -86,7 +86,6 @@ class ObjectEncoding {
         }
     }
 
-
     companion object {
         val gson = GsonBuilder()
             .registerTypeAdapter(Boolean::class.java, StrictBooleanDeserializer())
@@ -107,8 +106,8 @@ class ObjectEncoding {
             val type: Type = object : TypeToken<T?>() {}.type
             return gson.fromJson(this, type) as T
         }
-        fun<T> String.decodeObject(type: Type): T {
-            return gson.fromJson(this, type) as T
+        fun String.decodeObject(type: Type): Any {
+            return gson.fromJson(this, type)
         }
     }
 }
