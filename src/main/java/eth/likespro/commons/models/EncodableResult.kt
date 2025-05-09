@@ -4,11 +4,11 @@ import eth.likespro.commons.wrapping.WrappedException
 import eth.likespro.commons.wrapping.WrappedException.Companion.wrap
 
 class EncodableResult<T> (
-    val data: T?,
+    val value: T?,
     val failure: WrappedException?
 ) {
     val isSuccess: Boolean
-        get() = data != null && failure == null
+        get() = value != null && failure == null
     val isFailure: Boolean
         get() = !isSuccess
     companion object {
@@ -24,10 +24,10 @@ class EncodableResult<T> (
     }
 
     fun getOrNull(): T? {
-        return data
+        return value
     }
     fun onSuccess(action: (T) -> Unit): EncodableResult<T> {
-        data?.let { action(it) }
+        value?.let { action(it) }
         return this
     }
     fun onFailure(action: (WrappedException) -> Unit): EncodableResult<T> {
@@ -41,13 +41,13 @@ class EncodableResult<T> (
 
         other as EncodableResult<*>
 
-        if (data != other.data) return false
+        if (value != other.value) return false
         if (failure != other.failure) return false
 
         return true
     }
     override fun hashCode(): Int {
-        var result = data?.hashCode() ?: 0
+        var result = value?.hashCode() ?: 0
         result = 31 * result + (failure?.hashCode() ?: 0)
         return result
     }

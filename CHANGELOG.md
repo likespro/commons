@@ -1,1 +1,1 @@
-Add isSuccess and isFailure properties to EncodableResult for better result handling
+Rename `data` property to `value` in EncodableResult for clarity and consistency
