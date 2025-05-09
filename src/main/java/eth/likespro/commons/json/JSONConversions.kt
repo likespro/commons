@@ -21,26 +21,14 @@ class JSONConversions {
         }
 
         /**
-         * Converts an Iterable to a JSONArray.
+         * Converts any object to a JSONArray.
          *
-         * This function uses Gson to serialize the Iterable to a JSON string and then
+         * This function uses Gson to serialize the object to a JSON string and then
          * parses that string into a JSONArray.
          *
-         * @return a JSONArray representation of the Iterable.
+         * @return a JSONArray representation of the object.
          */
-        fun Iterable<*>.toJSONArray(): JSONArray {
-            return JSONArray(Gson().toJson(this))
-        }
-
-        /**
-         * Converts an Array to a JSONArray.
-         *
-         * This function uses Gson to serialize the Array to a JSON string and then
-         * parses that string into a JSONArray.
-         *
-         * @return a JSONArray representation of the Array.
-         */
-        fun Array<*>.toJSONArray(): JSONArray {
+        fun Any.toJSONArray(): JSONArray {
             return JSONArray(Gson().toJson(this))
         }
 
@@ -52,7 +40,7 @@ class JSONConversions {
          * @param T the type of the object to be returned.
          * @return an object of type T.
          */
-        fun <T> JSONObject.toObject(): T{
+        fun <T> JSONObject.toObject(): T {
             val type: Type = object : TypeToken<T?>() {}.type
             return Gson().fromJson(this.toString(), type) as T
         }
@@ -65,7 +53,7 @@ class JSONConversions {
          * @param T the type of the object to be returned.
          * @return an object of type T.
          */
-        fun <T> JSONArray.toObject(): T{
+        fun <T> JSONArray.toObject(): T {
             val listType: Type = object : TypeToken<T?>() {}.type
             return Gson().fromJson(this.toString(), listType) as T
         }

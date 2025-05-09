@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 import org.json.JSONObject
 
 class JSONConversionsTest {
-    // Any.toJSONObject()
     @Test
     fun toJSONObject_withValidObject_returnsCorrectJSONObject() {
         val data = mapOf("key" to "value")
