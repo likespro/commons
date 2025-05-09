@@ -1,1 +1,1 @@
-Add WrappedException class for serializable exception handling
+Add ClassTypeAdapter for Class serialization and deserialization

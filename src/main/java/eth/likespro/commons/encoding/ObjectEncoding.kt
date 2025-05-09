@@ -69,6 +69,23 @@ class ObjectEncoding {
             return json.asString
         }
     }
+    class ClassTypeAdapter : JsonSerializer<Class<*>>, JsonDeserializer<Class<*>> {
+        override fun serialize(
+            src: Class<*>,
+            typeOfSrc: Type,
+            context: JsonSerializationContext
+        ): JsonElement {
+            return JsonPrimitive(src.name)
+        }
+        override fun deserialize(
+            json: JsonElement,
+            typeOfT: Type,
+            context: JsonDeserializationContext
+        ): Class<*> {
+            return Class.forName(json.asString)
+        }
+    }
+
 
     companion object {
         val gson = GsonBuilder()
@@ -80,8 +97,8 @@ class ObjectEncoding {
             .registerTypeAdapter(Float::class.java, StrictFloatDeserializer())
             .registerTypeAdapter(Double::class.java, StrictDoubleDeserializer())
             .registerTypeAdapter(String::class.java, StrictStringDeserializer())
+            .registerTypeAdapter(Class::class.java, ClassTypeAdapter())
             .create()
-
 
         fun Any.encodeObject(): String {
             return gson.toJson(this)
