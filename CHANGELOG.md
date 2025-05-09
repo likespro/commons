@@ -1,1 +1,1 @@
-Add WrappedExceptionException class to encapsulate WrappedException in real Exception
+- Add toException method to WrappedException for better exception handling

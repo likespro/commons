@@ -53,4 +53,8 @@ class WrappedException(
             return WrappedException(this)
         }
     }
+
+    fun toException(): Exception {
+        return WrappedExceptionException(this)
+    }
 }
