@@ -24,6 +24,15 @@ class WrappedException(
         e.localizedMessage
     )
 
+    /**
+     * Wraps WrappedException again in real Exception
+     *
+     * @param wrappedException The WrappedException to be wrapped.
+     *
+     * @return Real Exception containing WrappedException.
+     */
+    class WrappedExceptionException(val wrappedException: WrappedException) : Exception("This Exception is wrapping for WrappedException")
+
     companion object {
         /**
          * Converts the exception to a wrapped exception if wrap is true.

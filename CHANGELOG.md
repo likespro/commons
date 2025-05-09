@@ -1,1 +1,1 @@
-Rename `data` property to `value` in EncodableResult for clarity and consistency
+Add WrappedExceptionException class to encapsulate WrappedException in real Exception
