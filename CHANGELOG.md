@@ -1,1 +1,1 @@
-Refactor WrappedException to handle Throwable and add EncodableResult class for better error handling
+Add isSuccess and isFailure properties to EncodableResult for better result handling

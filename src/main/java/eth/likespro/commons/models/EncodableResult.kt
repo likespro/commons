@@ -7,6 +7,10 @@ class EncodableResult<T> (
     val data: T?,
     val failure: WrappedException?
 ) {
+    val isSuccess: Boolean
+        get() = data != null && failure == null
+    val isFailure: Boolean
+        get() = !isSuccess
     companion object {
         fun <T> success(data: T): EncodableResult<T> {
             return EncodableResult(data, null)
