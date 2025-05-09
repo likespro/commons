@@ -1,1 +1,1 @@
-Refactor ObjectEncoding to improve type handling
+Refactor WrappedException to handle Throwable and add EncodableResult class for better error handling

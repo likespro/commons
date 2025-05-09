@@ -10,13 +10,13 @@ package eth.likespro.commons.wrapping
  * @param localizedMessage The localized message of the exception.
  */
 class WrappedException(
-    val exceptionClass: Class<out Exception>,
+    val exceptionClass: Class<out Throwable>,
     val stackTrace: String,
     val message: String?,
     val cause: String?,
     val localizedMessage: String?
 ) {
-    constructor(e: Exception) : this(
+    constructor(e: Throwable) : this(
         e::class.java,
         e.stackTraceToString(),
         e.message,
@@ -31,7 +31,7 @@ class WrappedException(
          * @param wrap A boolean indicating whether to wrap the exception or not.
          * @return The wrapped exception or the original exception.
          */
-        fun Exception.wrapMaybe(wrap: Boolean): Any {
+        fun Throwable.wrapMaybe(wrap: Boolean): Any {
             return if(wrap) WrappedException(this) else this
         }
 
@@ -40,7 +40,7 @@ class WrappedException(
          *
          * @return The wrapped exception.
          */
-        fun Exception.wrap(): WrappedException {
+        fun Throwable.wrap(): WrappedException {
             return WrappedException(this)
         }
     }
