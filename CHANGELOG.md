@@ -1,1 +1,1 @@
-Add strict deserializers for various data types in ObjectEncoding
+Add WrappedException class for serializable exception handling
