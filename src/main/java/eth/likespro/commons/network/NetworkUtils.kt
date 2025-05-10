@@ -30,11 +30,11 @@ class NetworkUtils {
         }
 
         /**
-         * Sends a GET request to the given URI and returns the response as a JSONObject.
+         * Sends a GET request to the given URI and returns the response as a String.
          *
-         * @return The response body as a JSONObject.
+         * @return The response body as String.
          */
-        fun URI.get(): JSONObject {
+        fun URI.get(): String {
             val response = HttpClient.newBuilder()
                 .build()
                 .send(
@@ -43,27 +43,25 @@ class NetworkUtils {
                         .build(),
                     HttpResponse.BodyHandlers.ofString()
                 )
-            return JSONObject(response.body())
+            return response.body()
         }
 
         /**
-         * Sends a POST request to the given URI with the specified JSON body.
+         * Sends a POST request to the given URI with the specified body and returns the response as a String.
          *
-         * @param body The JSON body to be sent in the POST request.
+         * @param body The body of the POST request.
+         * @return The response body as String.
          */
-        fun URI.post(body: JSONObject) {
-            HttpClient.newBuilder()
+        fun URI.post(body: String): String {
+            return HttpClient.newBuilder()
                 .build()
                 .send(
                     HttpRequest.newBuilder(this)
                         .header("Content-Type", "application/json")
-                        .POST(HttpRequest.BodyPublishers.ofString(JSONObject().apply {
-                            put("functionName", "ping")
-                            put("functionArgs", JSONObject())
-                        }.toString()))
+                        .POST(HttpRequest.BodyPublishers.ofString(body))
                         .build(),
                     HttpResponse.BodyHandlers.ofString()
-                )
+                ).body()
         }
     }
 }
