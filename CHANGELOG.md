@@ -1,1 +1,2 @@
+- Add GET and POST extension functions to URI for JSON handling
 - Add toException method to WrappedException for better exception handling
