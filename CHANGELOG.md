@@ -1,1 +1,1 @@
-Hotfix for `URI.post` extension
+Enhance EncodableResult with additional utility methods and documentation
