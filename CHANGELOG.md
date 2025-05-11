@@ -1,1 +1,2 @@
-Add ReflectionUtils class with a .boxed() method to box primitives
+- Add .unboxed() method to unbox types which can be unboxed into primitive types
+- Add .getParametrizedType() method to get the parametrized type of class
