@@ -62,7 +62,12 @@ class WrappedException(
         }
     }
 
-    fun toException(): Exception {
+    /**
+     * Converts the wrapped exception to a WrappedExceptionException.
+     *
+     * @return The WrappedExceptionException.
+     */
+    fun toException(): WrappedExceptionException {
         return WrappedExceptionException(this)
     }
 }

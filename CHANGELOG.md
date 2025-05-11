@@ -1,1 +1,1 @@
-Enhance WrappedExceptionException with detailed exception information
+Refactor toException() method in WrappedException to return WrappedExceptionException
