@@ -31,7 +31,15 @@ class WrappedException(
      *
      * @return Real Exception containing WrappedException.
      */
-    class WrappedExceptionException(val wrappedException: WrappedException) : Exception("This Exception is wrapping for WrappedException")
+    class WrappedExceptionException(val wrappedException: WrappedException) : Exception("""This Exception is wrapping for WrappedException.
+        Original Exception: ${wrappedException.exceptionClass.name}
+        Message: ${wrappedException.message}
+        LocalizedMessage: ${wrappedException.localizedMessage}
+        Cause: ${wrappedException.cause}
+        StackTrace:
+        ${wrappedException.stackTrace}
+        ---------------------------
+    """.trimIndent())
 
     companion object {
         /**

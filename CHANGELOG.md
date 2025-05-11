@@ -1,4 +1,1 @@
-- Add .unboxed() method to unbox types which can be unboxed into primitive types
-- Add .getParametrizedType() method to get the parametrized type of class
-- Deprecate .toJSONObject() and .toJSONArray() methods in JSONConversions for .encodeObject() usage
-- Add optional metadata to EncodableResult
+Enhance WrappedExceptionException with detailed exception information
