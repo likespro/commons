@@ -16,6 +16,7 @@ class JSONConversions {
          *
          * @return a JSONObject representation of the object.
          */
+        @Deprecated("Use encodeObject() instead", ReplaceWith("encodeObject()"))
         fun Any.toJSONObject(): JSONObject {
             return JSONObject(Gson().toJson(this))
         }
@@ -28,6 +29,7 @@ class JSONConversions {
          *
          * @return a JSONArray representation of the object.
          */
+        @Deprecated("Use encodeObject() instead", ReplaceWith("encodeObject()"))
         fun Any.toJSONArray(): JSONArray {
             return JSONArray(Gson().toJson(this))
         }
