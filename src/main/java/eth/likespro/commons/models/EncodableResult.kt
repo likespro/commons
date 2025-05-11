@@ -3,9 +3,10 @@ package eth.likespro.commons.models
 import eth.likespro.commons.wrapping.WrappedException
 import eth.likespro.commons.wrapping.WrappedException.Companion.wrap
 
-class EncodableResult<T> (
+class EncodableResult<T> private constructor (
     val value: T?,
-    val failure: WrappedException?
+    val failure: WrappedException?,
+    val metadata: Map<String, Any?> = emptyMap()
 ) {
     /**
      * Indicates whether the result is a success.
@@ -28,20 +29,22 @@ class EncodableResult<T> (
          * Creates a new EncodableResult instance representing a success.
          *
          * @param data The data to be wrapped in the result.
+         * @param metadata Optional metadata to be associated with the result.
          * @return A new EncodableResult instance representing a success.
          */
-        fun <T> success(data: T): EncodableResult<T> {
-            return EncodableResult(data, null)
+        fun <T> success(data: T, metadata: Map<String, Any?> = emptyMap()): EncodableResult<T> {
+            return EncodableResult(data, null, metadata)
         }
 
         /**
          * Creates a new EncodableResult instance representing a failure.
          *
          * @param exception The exception to be wrapped in the result.
+         * @param metadata Optional metadata to be associated with the result.
          * @return A new EncodableResult instance representing a failure.
          */
-        fun <T> failure(exception: WrappedException): EncodableResult<T> {
-            return EncodableResult(null, exception)
+        fun <T> failure(exception: WrappedException, metadata: Map<String, Any?> = emptyMap()): EncodableResult<T> {
+            return EncodableResult(null, exception, metadata)
         }
 
         /**
