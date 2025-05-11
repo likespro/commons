@@ -1,1 +1,1 @@
-Enhance EncodableResult with additional utility methods and documentation
+Add ReflectionUtils class with a .boxed() method to box primitives
