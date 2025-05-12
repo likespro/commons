@@ -1,1 +1,1 @@
-Rename WrappedExceptionException to WrappedException.Exception and change its superclass to RuntimeException
+Fix EncodableResult to work with nullable types

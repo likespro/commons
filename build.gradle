@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'eth.likespro'
-version = '1.8.3'
+version = '1.8.4'
 
 sourceCompatibility = 17
 targetCompatibility = 17
@@ -70,9 +70,6 @@ compileTestKotlin {
     kotlinOptions.jvmTarget = '17'
 }
 jar {
-    manifest {
-        attributes 'Premain-Class': 'eth.likespro.commons.ObjectSizeFetcher'
-    }
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     enabled = true
 }

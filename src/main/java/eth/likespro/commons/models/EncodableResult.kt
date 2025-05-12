@@ -14,7 +14,7 @@ class EncodableResult<T> private constructor (
      * @return true if the result is a success, false otherwise.
      */
     val isSuccess: Boolean
-        get() = value != null && failure == null
+        get() = failure == null
 
     /**
      * Indicates whether the result is a failure.
@@ -65,7 +65,7 @@ class EncodableResult<T> private constructor (
      * @return The current EncodableResult instance.
      */
     fun onSuccess(action: (T) -> Unit): EncodableResult<T> {
-        value?.let { action(it) }
+        if(failure == null) action(value as T)
         return this
     }
 
@@ -96,7 +96,7 @@ class EncodableResult<T> private constructor (
      * @return the value if present, otherwise [defaultValue]
      */
     fun getOrDefault(defaultValue: T): T {
-        return value ?: defaultValue
+        return if(failure == null) value as T else defaultValue
     }
 
     /**
@@ -106,7 +106,7 @@ class EncodableResult<T> private constructor (
      * @return the value if present, otherwise the result of invoking [onFailure]
      */
     fun getOrElse(onFailure: (WrappedException) -> T): T {
-        return value ?: onFailure(failure!!)
+        return if(failure == null) value as T else onFailure(failure)
     }
 
     /**
@@ -116,7 +116,7 @@ class EncodableResult<T> private constructor (
      * @return the value if present.
      */
     fun getOrThrow(): T {
-        return value ?: throw failure!!.toException()
+        return if(failure == null) value as T else throw failure.toException()
     }
 
     override fun equals(other: Any?): Boolean {
