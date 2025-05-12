@@ -31,7 +31,7 @@ class WrappedException(
      *
      * @return Real Exception containing WrappedException.
      */
-    class WrappedExceptionException(val wrappedException: WrappedException) : Exception("""This Exception is wrapping for WrappedException.
+    class Exception(val wrappedException: WrappedException) : RuntimeException("""This Exception is wrapping for WrappedException.
         Original Exception: ${wrappedException.exceptionClass.name}
         Message: ${wrappedException.message}
         LocalizedMessage: ${wrappedException.localizedMessage}
@@ -67,7 +67,7 @@ class WrappedException(
      *
      * @return The WrappedExceptionException.
      */
-    fun toException(): WrappedExceptionException {
-        return WrappedExceptionException(this)
+    fun toException(): Exception {
+        return Exception(this)
     }
 }

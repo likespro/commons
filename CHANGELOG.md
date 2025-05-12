@@ -1,1 +1,1 @@
-Refactor toException() method in WrappedException to return WrappedExceptionException
+Rename WrappedExceptionException to WrappedException.Exception and change its superclass to RuntimeException
