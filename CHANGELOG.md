@@ -1,1 +1,1 @@
-Fix EncodableResult to work with nullable types
+Completely rebuilt the project to separate features into different modules

@@ -9,6 +9,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/core" />
+            <option value="$PROJECT_DIR$/core-mit" />
+            <option value="$PROJECT_DIR$/network" />
+            <option value="$PROJECT_DIR$/reflection" />
+            <option value="$PROJECT_DIR$/security" />
           </set>
         </option>
       </GradleProjectSettings>
