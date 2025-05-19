@@ -19,7 +19,6 @@
 package eth.likespro.commons.reflection
 
 import com.google.gson.*
-import com.google.gson.reflect.TypeToken
 import eth.likespro.commons.reflection.ReflectionUtils.getType
 import java.lang.reflect.Type
 
@@ -106,6 +105,15 @@ object ObjectEncoding {
     }
 
     private val gson = GsonBuilder()
+        // Unboxed
+        .registerTypeHierarchyAdapter(java.lang.Boolean.TYPE, StrictBooleanDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Byte.TYPE, StrictByteDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Short.TYPE, StrictShortDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Integer.TYPE, StrictIntDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Long.TYPE, StrictLongDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Float.TYPE, StrictFloatDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Double.TYPE, StrictDoubleDeserializer())
+        //Boxed
         .registerTypeHierarchyAdapter(java.lang.Boolean::class.java, StrictBooleanDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Byte::class.java, StrictByteDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Short::class.java, StrictShortDeserializer())

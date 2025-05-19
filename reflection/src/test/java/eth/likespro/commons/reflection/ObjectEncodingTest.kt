@@ -36,6 +36,8 @@ class ObjectEncodingTest {
         assertEquals("""{"key":"value"}""", json)
     }
 
+
+
     @Test
     fun decodeObject_decodesValidJsonStringToObject() {
         val json = """{"key":"value"}"""

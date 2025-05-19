@@ -1,1 +1,3 @@
-Completely rebuilt the project to separate features into different modules
+### Fixed Bugs
+`reflection` module:
+- .decodeObject() not working properly with Java primitives
