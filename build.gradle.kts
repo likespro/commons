@@ -1,3 +1,56 @@
+/*
+ * Copyright 2025 likespro.
+ *
+ * From https://github.com/likespro/commons
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+val GROUP = "io.github.likespro" // Until normal group ID - eth.likespro.commons
+val VERSION = "3.0.0"
+val NAME = "likespro Commons"
+val DESCRIPTION = "Common utilities for likespro projects"
+val URL = "https://github.com/likespro/commons"
+val LICENSES: MavenPomLicenseSpec.(project: Project) -> Unit = { project ->
+    if(project.name.endsWith("-mit")) license {
+        name.set("MIT License")
+        url.set("https://opensource.org/licenses/MIT")
+    } else license {
+        name.set("Apache License, Version 2.0")
+        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+    }
+}
+val DEVELOPERS: MavenPomDeveloperSpec.() -> Unit = {
+    developer {
+        id.set("likespro")
+        email.set("likespro.eth@gmail.com")
+    }
+}
+val SCM: MavenPomScm.() -> Unit = {
+    connection.set("scm:git:git://github.com/likespro/commons.git")
+    developerConnection.set("scm:git:ssh://github.com:likespro/commons.git")
+    url.set("https://github.com/likespro/commons")
+}
+val PUBLISHED_ARTIFACTS_PREFIX = "commons-" // Until normal group ID - eth.likespro.commons
+
+
+
+/* =================== *
+ * AUTOMATIZED SECTION *
+ * =================== */
+
+
+
 plugins {
     id("java-library")
     kotlin("jvm") version "2.1.21"
@@ -10,8 +63,8 @@ plugins {
 }
 
 allprojects {
-    group = "io.github.likespro" // Until normal group ID - eth.likespro.commons
-    version = "3.0.0"
+    group = GROUP
+    version = VERSION
 
     repositories {
         mavenCentral()
@@ -55,32 +108,15 @@ subprojects {
             create<MavenPublication>("mavenJava") {
                 from(components["java"])
 
-                artifactId = "commons-${project.name}" // Until normal group ID - eth.likespro.commons
+                artifactId = PUBLISHED_ARTIFACTS_PREFIX + project.name
 
                 pom {
-                    name.set("likespro Commons")
-                    description.set("Common utilities for likespro projects")
-                    url.set("https://github.com/likespro/commons")
-                    licenses {
-                        if(project.name.endsWith("-mit")) license {
-                            name.set("MIT License")
-                            url.set("https://opensource.org/licenses/MIT")
-                        } else license {
-                            name.set("Apache License, Version 2.0")
-                            url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                        }
-                    }
-                    developers {
-                        developer {
-                            id.set("likespro")
-                            email.set("likespro.eth@gmail.com")
-                        }
-                    }
-                    scm {
-                        connection.set("scm:git:git://github.com/likespro/commons.git")
-                        developerConnection.set("scm:git:ssh://github.com:likespro/commons.git")
-                        url.set("https://github.com/likespro/commons")
-                    }
+                    name.set(NAME)
+                    description.set(DESCRIPTION)
+                    url.set(URL)
+                    licenses { LICENSES(project) }
+                    developers { DEVELOPERS() }
+                    scm { SCM() }
                 }
             }
         }
@@ -100,9 +136,9 @@ subprojects {
         }
     }
 
-    signing {
+    if(System.getenv("PGP_PRIVATE_KEY") != null) signing {
         sign(publishing.publications)
-        useInMemoryPgpKeys(System.getenv("PGP_PRIVATE_KEY")?.replace("\\n", "\n")?.trimIndent(), System.getenv("PGP_PRIVATE_KEY_PASSWORD") ?: "")
+        useInMemoryPgpKeys(System.getenv("PGP_PRIVATE_KEY").replace("\\n", "\n")?.trimIndent(), System.getenv("PGP_PRIVATE_KEY_PASSWORD") ?: "")
     }
 }
 
