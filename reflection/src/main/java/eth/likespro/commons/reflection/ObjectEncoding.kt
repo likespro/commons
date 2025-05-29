@@ -19,6 +19,8 @@
 package eth.likespro.commons.reflection
 
 import com.google.gson.*
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
 import eth.likespro.commons.reflection.ReflectionUtils.getType
 import java.lang.reflect.Type
 
@@ -104,6 +106,25 @@ object ObjectEncoding {
         }
     }
 
+    private class UnitDeserializer : TypeAdapter<Unit?>() {
+        override fun write(out: JsonWriter, value: Unit?) {
+            out.nullValue()
+        }
+        override fun read(reader: JsonReader): Unit? {
+            reader.nextNull()
+            return null
+        }
+    }
+    private class VoidDeserializer : TypeAdapter<Void?>() {
+        override fun write(out: JsonWriter, value: Void?) {
+            out.nullValue()
+        }
+        override fun read(reader: JsonReader): Void? {
+            reader.nextNull()
+            return null
+        }
+    }
+
     private val gson = GsonBuilder()
         // Unboxed
         .registerTypeHierarchyAdapter(java.lang.Boolean.TYPE, StrictBooleanDeserializer())
@@ -113,6 +134,7 @@ object ObjectEncoding {
         .registerTypeHierarchyAdapter(java.lang.Long.TYPE, StrictLongDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Float.TYPE, StrictFloatDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Double.TYPE, StrictDoubleDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Void.TYPE, VoidDeserializer())
         //Boxed
         .registerTypeHierarchyAdapter(java.lang.Boolean::class.java, StrictBooleanDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Byte::class.java, StrictByteDeserializer())
@@ -123,6 +145,8 @@ object ObjectEncoding {
         .registerTypeHierarchyAdapter(java.lang.Double::class.java, StrictDoubleDeserializer())
         .registerTypeHierarchyAdapter(java.lang.String::class.java, StrictStringDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Class::class.java, ClassTypeAdapter())
+        .registerTypeHierarchyAdapter(Unit::class.java, UnitDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Void::class.java, VoidDeserializer())
         .create()
 
     /**

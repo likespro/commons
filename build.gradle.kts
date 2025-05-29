@@ -17,7 +17,7 @@
  */
 
 val GROUP = "io.github.likespro" // Until normal group ID - eth.likespro.commons
-val VERSION = "3.0.1"
+val VERSION = "3.0.2"
 val NAME = "likespro Commons"
 val DESCRIPTION = "Common utilities for likespro projects"
 val URL = "https://github.com/likespro/commons"

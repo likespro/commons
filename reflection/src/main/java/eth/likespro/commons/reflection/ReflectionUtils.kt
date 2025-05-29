@@ -36,6 +36,7 @@ object ReflectionUtils {
         java.lang.Long.TYPE -> java.lang.Long::class.java
         java.lang.Float.TYPE -> java.lang.Float::class.java
         java.lang.Double.TYPE -> java.lang.Double::class.java
+        java.lang.Void.TYPE -> java.lang.Void::class.java
         else -> this
     }
 
@@ -53,6 +54,7 @@ object ReflectionUtils {
         java.lang.Long::class.java -> java.lang.Long.TYPE
         java.lang.Float::class.java -> java.lang.Float.TYPE
         java.lang.Double::class.java -> java.lang.Double.TYPE
+        java.lang.Void::class.java -> java.lang.Void.TYPE
         else -> this
     }
 
