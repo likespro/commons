@@ -24,6 +24,7 @@
 
 package eth.likespro.commons.numeric
 
+import java.security.SecureRandom
 import java.util.Base64
 
 object Base64Utils {
@@ -62,4 +63,20 @@ object Base64Utils {
      * @return the standard Base64 encoded string.
      */
     fun String.urlBase64ToBase64(): String = Base64.getEncoder().encodeToString(Base64.getUrlDecoder().decode(this))
+
+    /**
+     * Generates a random Base64-encoded string of the specified length.
+     *
+     * @param length The desired length of the resulting Base64-encoded string.
+     * @param useUrlEncoder If true, the URL-safe Base64 encoder will be used; defaults to false.
+     * @return A random Base64-encoded string of the given length.
+     */
+    fun randomBase64(length: Int, useUrlEncoder: Boolean = false): String {
+        val random = SecureRandom()
+        val bytes = ByteArray(length*3/4)
+        random.nextBytes(bytes)
+        return (if(useUrlEncoder) Base64.getUrlEncoder() else Base64.getEncoder())
+            .withoutPadding()
+            .encodeToString(bytes)
+    }
 }
