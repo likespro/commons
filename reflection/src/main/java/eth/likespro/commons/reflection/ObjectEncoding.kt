@@ -135,7 +135,7 @@ object ObjectEncoding {
         .registerTypeHierarchyAdapter(java.lang.Float.TYPE, StrictFloatDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Double.TYPE, StrictDoubleDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Void.TYPE, VoidDeserializer())
-        //Boxed
+        // Boxed
         .registerTypeHierarchyAdapter(java.lang.Boolean::class.java, StrictBooleanDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Byte::class.java, StrictByteDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Short::class.java, StrictShortDeserializer())
@@ -147,6 +147,8 @@ object ObjectEncoding {
         .registerTypeHierarchyAdapter(java.lang.Class::class.java, ClassTypeAdapter())
         .registerTypeHierarchyAdapter(Unit::class.java, UnitDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Void::class.java, VoidDeserializer())
+        // Nulls
+        .serializeNulls()
         .create()
 
     /**
@@ -154,7 +156,7 @@ object ObjectEncoding {
      *
      * @return The string representation of the object.
      */
-    fun Any.encodeObject(): String {
+    fun Any?.encodeObject(): String {
         return gson.toJson(this)
     }
 
@@ -172,7 +174,7 @@ object ObjectEncoding {
      * @param type The type of the object to decode.
      * @return The decoded object.
      */
-    fun String.decodeObject(type: Type): Any {
+    fun String.decodeObject(type: Type): Any? {
         return gson.fromJson(this, type)
     }
 }
