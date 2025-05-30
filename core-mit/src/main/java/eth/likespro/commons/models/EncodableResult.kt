@@ -146,6 +146,13 @@ class EncodableResult<T> private constructor (
         return if(failure == null) value as T else throw failure.toException()
     }
 
+    /**
+     * Erases the stack trace of the associated failure, if any, within the current result.
+     *
+     * @return The current EncodableResult instance with the stack trace of the failure erased.
+     */
+    fun eraseStackTrace(): EncodableResult<T> = this.apply { failure?.eraseStackTrace() }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

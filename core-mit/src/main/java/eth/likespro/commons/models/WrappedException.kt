@@ -35,7 +35,7 @@ package eth.likespro.commons.models
  */
 class WrappedException(
     val exceptionClass: Class<out Throwable>,
-    val stackTrace: String,
+    var stackTrace: String,
     val message: String?,
     val cause: String?,
     val localizedMessage: String?
@@ -101,4 +101,11 @@ class WrappedException(
     fun toException(): Exception {
         return Exception(this)
     }
+
+    /**
+     * Clears the stack trace string of the current WrappedException instance.
+     *
+     * @return The current WrappedException instance with the stack trace erased.
+     */
+    fun eraseStackTrace(): WrappedException = this.apply { stackTrace = "" }
 }
