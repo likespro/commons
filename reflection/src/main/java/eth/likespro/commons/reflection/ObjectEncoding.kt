@@ -19,6 +19,8 @@
 package eth.likespro.commons.reflection
 
 import com.google.gson.*
+import com.google.gson.internal.Streams
+import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
 import eth.likespro.commons.reflection.ReflectionUtils.getType
@@ -125,7 +127,39 @@ object ObjectEncoding {
         }
     }
 
-    private val gson = GsonBuilder()
+    private class ClassNameTypeAdapterFactory : TypeAdapterFactory {
+        override fun <T> create(gson: Gson, type: TypeToken<T>): TypeAdapter<T> {
+            val delegate = gson.getDelegateAdapter(this, type)
+
+            return object : TypeAdapter<T>() {
+                override fun write(out: JsonWriter, value: T) {
+                    if (value == null) {
+                        out.nullValue()
+                        return
+                    }
+
+                    val jsonValue = delegate.toJsonTree(value)
+                    val jsonArray = JsonArray().apply {
+                        add("\$CLASS" + value.javaClass.name)
+                        add(jsonValue)
+                    }
+                    Streams.write(jsonArray, out)
+                }
+
+                override fun read(reader: JsonReader): T {
+                    val jsonElement = Streams.parse(reader)
+                    return if(jsonElement.isJsonArray && jsonElement.asJsonArray.let { it.size() == 2 && it[0].isJsonPrimitive && it[0].asString.startsWith("\$CLASS") }) {
+                        val jsonArray = jsonElement.asJsonArray
+                        val className = jsonArray[0].asString.removePrefix("\$CLASS")
+                        println("Deserializing $jsonArray with $delegate and ${jsonArray[1]} as value and class ${jsonArray[0].asString} as class name")
+                        return delegate.fromJsonTree(jsonArray[1])
+                    } else delegate.fromJsonTree(jsonElement)
+                }
+            }
+        }
+    }
+
+    private val gsonOld = GsonBuilder()
         // Unboxed
         .registerTypeHierarchyAdapter(java.lang.Boolean.TYPE, StrictBooleanDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Byte.TYPE, StrictByteDeserializer())
@@ -151,13 +185,21 @@ object ObjectEncoding {
         .serializeNulls()
         .create()
 
+    private val gson = GsonBuilder()
+        .registerTypeAdapterFactory(ClassNameTypeAdapterFactory())
+        .registerTypeHierarchyAdapter(java.lang.Class::class.java, ClassTypeAdapter())
+        .registerTypeHierarchyAdapter(Unit::class.java, UnitDeserializer())
+        .registerTypeHierarchyAdapter(java.lang.Void::class.java, VoidDeserializer())
+        .serializeNulls()
+        .create()
+
     /**
      * Encodes an object to a string.
      *
      * @return The string representation of the object.
      */
     fun Any?.encodeObject(): String {
-        return gson.toJson(this)
+        return "[" + "{\"lpoep\": 1}," + gson.toJson(this) + "]"
     }
 
     /**
@@ -175,6 +217,9 @@ object ObjectEncoding {
      * @return The decoded object.
      */
     fun String.decodeObject(type: Type): Any? {
-        return gson.fromJson(this, type)
+        println("Decoding $this")
+        return if(this.startsWith("[{\"lpoep\": 1},"))
+            gson.fromJson(this.removePrefix("[{\"lpoep\": 1},").removeSuffix("]"), type)
+        else gsonOld.fromJson(this, type)
     }
 }

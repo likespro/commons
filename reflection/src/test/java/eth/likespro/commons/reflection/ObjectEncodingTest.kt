@@ -186,4 +186,12 @@ class ObjectEncodingTest {
         val deserializedClass: Class<*> = json.decodeObject()
         assertEquals(clazz, deserializedClass)
     }
+
+    @Test
+    fun decodeObject_handlesMapSerializationAndDeserialization() {
+        val map = mapOf("key" to "value")
+        val json = map.encodeObject()
+        val deserializedClass: Map<String, String> = json.decodeObject()
+        assertEquals(map, deserializedClass)
+    }
 }
