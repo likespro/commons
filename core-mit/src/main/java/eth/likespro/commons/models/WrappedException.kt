@@ -33,13 +33,106 @@ package eth.likespro.commons.models
  * @param cause The cause of the exception as a string.
  * @param localizedMessage The localized message of the exception.
  */
-class WrappedException(
+data class WrappedException(
     val exceptionClass: Class<out Throwable>,
     var stackTrace: String,
-    val message: String?,
-    val cause: String?,
-    val localizedMessage: String?
+    var message: String?,
+    var cause: String?,
+    var localizedMessage: String?
 ) {
+    /**
+     * Represents the configuration options for including various details
+     * when handling or transforming exceptions in the WrappedException class.
+     * Exception Class can't be excluded
+     *
+     * @property includeStackTrace Indicates whether the stack trace should be included.
+     * @property includeMessage Indicates whether the exception message should be included.
+     * @property includeCause Indicates whether the cause of the exception should be included.
+     * @property includeLocalizedMessage Indicates whether the localized exception message should be included.
+     */
+    data class DetailsConfiguration(
+        val includeStackTrace: Boolean = true,
+        val includeMessage: Boolean = true,
+        val includeCause: Boolean = true,
+        val includeLocalizedMessage: Boolean = true
+    ) {
+        companion object {
+            /**
+             * A pre-defined configuration instance for including all available details of an exception.
+             *
+             * This configuration enables the inclusion of the following details:
+             * - Exception class
+             * - Stack trace
+             * - Message
+             * - Cause
+             * - Localized message
+             *
+             * It can be used to configure how exception details should be extracted or presented,
+             * ensuring that all available information about the exception is included.
+             */
+            val INCLUDE_ALL = DetailsConfiguration(
+                includeStackTrace = true,
+                includeMessage = true,
+                includeCause = true,
+                includeLocalizedMessage = true
+            )
+
+            /**
+             * A predefined configuration for including only the exception class, message, and the cause
+             * when handling or transforming exceptions using the `DetailsConfiguration` class.
+             *
+             * This configuration excludes the stack trace and the localized message.
+             *
+             * - `includeStackTrace`: false (stack trace is excluded)
+             * - `includeMessage`: true (the exception message is included)
+             * - `includeCause`: true (cause of the exception is included)
+             * - `includeLocalizedMessage`: false (the localized exception message is excluded)
+             */
+            val INCLUDE_MESSAGE_AND_CAUSE = DetailsConfiguration(
+                includeStackTrace = false,
+                includeMessage = true,
+                includeCause = true,
+                includeLocalizedMessage = false
+            )
+
+            /**
+             * A predefined configuration for including only the exception class and the cause
+             * when handling or transforming exceptions using the `DetailsConfiguration` class.
+             *
+             * This configuration excludes the stack trace and the localized message.
+             *
+             * - `includeStackTrace`: false (stack trace is excluded)
+             * - `includeMessage`: false (the exception message is excluded)
+             * - `includeCause`: true (cause of the exception is included)
+             * - `includeLocalizedMessage`: false (the localized exception message is excluded)
+             */
+            val INCLUDE_CAUSE = DetailsConfiguration(
+                includeStackTrace = false,
+                includeMessage = false,
+                includeCause = true,
+                includeLocalizedMessage = false
+            )
+
+            /**
+             * A predefined configuration for including only the exception class
+             * when handling or transforming exceptions using the `DetailsConfiguration` class.
+             *
+             * This configuration excludes the stack trace and the localized message.
+             *
+             * - `includeStackTrace`: false (stack trace is excluded)
+             * - `includeMessage`: false (the exception message is excluded)
+             * - `includeCause`: false (cause of the exception is excluded)
+             * - `includeLocalizedMessage`: false (the localized exception message is excluded)
+             */
+            val INCLUDE_NOTHING = DetailsConfiguration(
+                includeStackTrace = false,
+                includeMessage = false,
+                includeCause = false,
+                includeLocalizedMessage = false
+            )
+        }
+    }
+
     constructor(e: Throwable) : this(
         e::class.java,
         e.stackTraceToString(),
@@ -103,9 +196,16 @@ class WrappedException(
     }
 
     /**
-     * Clears the stack trace string of the current WrappedException instance.
+     * Applies the specified configuration to the current exception, modifying the details
+     * such as stack trace, message, cause, and localized message based on the configuration provided.
      *
-     * @return The current WrappedException instance with the stack trace erased.
+     * @param configuration The configuration object that specifies which details should be included or excluded.
+     * @return The current exception instance after applying the provided configuration.
      */
-    fun eraseStackTrace(): WrappedException = this.apply { stackTrace = "" }
+    fun applyDetailsConfiguration(configuration: DetailsConfiguration): WrappedException = this.apply {
+        if(!configuration.includeStackTrace) stackTrace = ""
+        if(!configuration.includeMessage) message = null
+        if(!configuration.includeCause) cause = null
+        if(!configuration.includeLocalizedMessage) localizedMessage = null
+    }
 }

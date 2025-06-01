@@ -1,6 +1,6 @@
 ### New features
 `core-mit` module
-- Added `eraseStackTrace()` method in `EncodableResult` & `WrappedException` which erases the whole stack trace in exception information
+- Add `DetailsConfiguration` for `WrappedException.kt` and `EncodableResult.kt` to customize exception details inclusion
 - Added `randomBase64()` method to generate random Base64 of the specified length
 ### Fixed Bugs
 `reflection` module:

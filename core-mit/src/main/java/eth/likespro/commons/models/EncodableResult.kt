@@ -147,11 +147,16 @@ class EncodableResult<T> private constructor (
     }
 
     /**
-     * Erases the stack trace of the associated failure, if any, within the current result.
+     * Applies a configuration to modify the details of the associated failure, if present.
+     * The configuration defines which exception details (e.g., stack trace, message, etc.)
+     * should be included or excluded.
      *
-     * @return The current EncodableResult instance with the stack trace of the failure erased.
+     * @param configuration The configuration specifying the details to include for the failure.
+     * @return The current EncodableResult instance with the configuration applied to its failure, if any.
      */
-    fun eraseStackTrace(): EncodableResult<T> = this.apply { failure?.eraseStackTrace() }
+    fun applyExceptionDetailsConfiguration(configuration: WrappedException.DetailsConfiguration): EncodableResult<T> = this.apply {
+        failure?.applyDetailsConfiguration(configuration)
+    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
