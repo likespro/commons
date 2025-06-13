@@ -19,10 +19,14 @@
 package eth.likespro.commons.reflection
 
 import com.google.gson.*
+import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import eth.likespro.commons.models.Validatable
 import eth.likespro.commons.reflection.ReflectionUtils.getType
+import java.io.IOException
 import java.lang.reflect.Type
+
 
 object ObjectEncoding {
     private class StrictBooleanDeserializer : JsonDeserializer<Boolean> {
@@ -125,7 +129,26 @@ object ObjectEncoding {
         }
     }
 
+    class ValidatingTypeAdapterFactory : TypeAdapterFactory {
+        override fun <T> create(gson: Gson, type: TypeToken<T?>): TypeAdapter<T?> {
+            val delegate = gson.getDelegateAdapter<T?>(this, type)
+
+            return object : TypeAdapter<T?>() {
+                @Throws(IOException::class)
+                override fun write(out: JsonWriter?, value: T?) = delegate.write(out, value)
+
+                @Throws(IOException::class)
+                override fun read(`in`: JsonReader?): T? {
+                    val obj = delegate.read(`in`)
+                    if(obj is Validatable<*>) obj.throwIfInvalid()
+                    return obj
+                }
+            }
+        }
+    }
+
     private val gson = GsonBuilder()
+        .registerTypeAdapterFactory(ValidatingTypeAdapterFactory())
         // Unboxed
         .registerTypeHierarchyAdapter(java.lang.Boolean.TYPE, StrictBooleanDeserializer())
         .registerTypeHierarchyAdapter(java.lang.Byte.TYPE, StrictByteDeserializer())
