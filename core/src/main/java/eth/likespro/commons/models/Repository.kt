@@ -1,7 +1,5 @@
 package eth.likespro.commons.models
 
-import eth.likespro.commons.Pagination
-
 interface Repository<Entity : eth.likespro.commons.models.Entity<ID>, ID : Any> {
     suspend fun findById(id: ID): Entity?
 

@@ -1,4 +1,4 @@
-package eth.likespro.commons
+package eth.likespro.commons.models
 
 import eth.likespro.commons.models.value.Timestamp
 import kotlinx.serialization.Serializable
