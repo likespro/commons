@@ -7,6 +7,7 @@
 - Add `DetailsConfiguration` for `WrappedException.kt` and `EncodableResult.kt` to customize exception details inclusion
 - Add `randomBase64()` method to generate random Base64 of the specified length
 - Add `Value` interface to represent a value in wrappers
+- Add `Entity` interface to represent an entity
 ### Fixed Bugs
 `reflection` module:
 - `.encodeObject()`/`.decodeObject()` not working properly with `null`
