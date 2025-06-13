@@ -5,7 +5,8 @@
 - Add `Timestamp` value class for representing timestamps
 `core-mit` module
 - Add `DetailsConfiguration` for `WrappedException.kt` and `EncodableResult.kt` to customize exception details inclusion
-- Added `randomBase64()` method to generate random Base64 of the specified length
+- Add `randomBase64()` method to generate random Base64 of the specified length
+- Add `Value` interface to represent a value in wrappers
 ### Fixed Bugs
 `reflection` module:
 - `.encodeObject()`/`.decodeObject()` not working properly with `null`
