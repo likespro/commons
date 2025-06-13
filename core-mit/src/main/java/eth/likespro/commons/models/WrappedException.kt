@@ -156,7 +156,14 @@ data class WrappedException(
         StackTrace:
         ${wrappedException.stackTrace}
         ---------------------------
-    """.trimIndent())
+    """.trimIndent()) {
+        /**
+         * Retrieves the wrapped exception housed within the current exception instance.
+         *
+         * @return The wrapped exception.
+         */
+        fun toWrappedException() = wrappedException
+    }
 
     companion object {
         /**
@@ -166,7 +173,7 @@ data class WrappedException(
          * @return The wrapped exception or the original exception.
          */
         fun Throwable.wrapMaybe(wrap: Boolean): Any {
-            return if(wrap) WrappedException(this) else this
+            return if(wrap) this.wrap() else this
         }
 
         /**
@@ -174,7 +181,7 @@ data class WrappedException(
          *
          * @return The wrapped exception.
          */
-        fun Throwable.wrap() = this.toWrappedException()
+        fun Throwable.wrap() = if(this is WrappedException.Exception) this.toWrappedException() else this.toWrappedException()
 
         /**
          * Converts the exception to a WrappedException.

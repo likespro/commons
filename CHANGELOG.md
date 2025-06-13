@@ -10,6 +10,8 @@
 - Add `Entity` interface to represent an entity
 - Add `Validatable` interface to represent a validatable object
 ### Fixed Bugs
+`core-mit` module:
+- Wrapping of `WrappedException` now returns the original `WrappedException`
 `reflection` module:
 - `.encodeObject()`/`.decodeObject()` not working properly with `null`
 - `.decodeObject()` not working properly with Java `Void`
