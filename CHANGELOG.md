@@ -8,6 +8,7 @@
 - Add `randomBase64()` method to generate random Base64 of the specified length
 - Add `Value` interface to represent a value in wrappers
 - Add `Entity` interface to represent an entity
+- Add `Validatable` interface to represent a validatable object
 ### Fixed Bugs
 `reflection` module:
 - `.encodeObject()`/`.decodeObject()` not working properly with `null`
