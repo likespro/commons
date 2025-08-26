@@ -7,6 +7,7 @@
 - Add `PlaceId` value class for representing place identifiers on Google Maps and Apple Maps
 - Add `CustomGeolocation` value class for representing custom geographic locations
 `core-mit` module
+- Add `String.toJSONObject()` & `String.toJSONArray()` methods to parse JSON strings
 - Add `tryOrRuntimeException(block)` method. If the block (e.g., a lambda) throws an exception, it will be wrapped into `RuntimeException`
 - Add `DetailsConfiguration` for `WrappedException.kt` and `EncodableResult.kt` to customize exception details inclusion
 - Add `randomBase64()` method to generate random Base64 of the specified length

@@ -24,6 +24,7 @@
 
 package eth.likespro.commons.json
 
+import org.json.JSONArray
 import org.json.JSONObject
 
 object JSONUtils {
@@ -34,4 +35,33 @@ object JSONUtils {
      * @return The associated value as a String, or null if the key is not found.
      */
     fun JSONObject.getStringOrNull(key: String): String? { return if(this.has(key)) this.getString(key) else null }
+
+    /**
+     * Converts the current string to a [JSONObject] instance.
+     * The string must be a valid JSON; otherwise, an [IllegalArgumentException] is thrown.
+     *
+     * @return A [JSONObject] representation of the string.
+     * @throws IllegalArgumentException If the string is not a valid JSON.
+     */
+    fun String.toJSONObject(): JSONObject {
+        return try {
+            JSONObject(this)
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Invalid JSON string: $this", e)
+        }
+    }
+
+    /**
+     * Converts the given JSON string representation to a [JSONArray] object.
+     *
+     * @return A [JSONArray] instance parsed from the string.
+     * @throws IllegalArgumentException if the string is not a valid JSON array representation.
+     */
+    fun String.toJSONArray(): JSONArray {
+        return try {
+            JSONArray(this)
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Invalid JSON array string: $this", e)
+        }
+    }
 }
