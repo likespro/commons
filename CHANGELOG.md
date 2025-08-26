@@ -24,3 +24,5 @@
 - `.encodeObject()`/`.decodeObject()` not working properly with `null`
 - `.decodeObject()` not working properly with Java `Void`
 - `.boxed()`/`.unboxed()` not working properly with Java `Void`
+`network` module:
+- Wrapped HTTP operations exceptions into `RuntimeException`s

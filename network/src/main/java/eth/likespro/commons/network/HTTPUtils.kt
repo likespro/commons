@@ -18,10 +18,13 @@
 
 package eth.likespro.commons.network
 
+import eth.likespro.commons.misc.ExceptionUtils.tryOrRuntimeException
+import java.io.IOException
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import kotlin.jvm.Throws
 
 object HTTPUtils {
     /**
@@ -29,16 +32,15 @@ object HTTPUtils {
      *
      * @return The response body as String.
      */
-    fun URI.get(): String {
-        val response = HttpClient.newBuilder()
+    fun URI.get(): String = tryOrRuntimeException {
+        HttpClient.newBuilder()
             .build()
             .send(
                 HttpRequest.newBuilder(this)
                     .GET()
                     .build(),
                 HttpResponse.BodyHandlers.ofString()
-            )
-        return response.body()
+            ).body()
     }
 
     /**
@@ -47,8 +49,8 @@ object HTTPUtils {
      * @param body The body of the POST request.
      * @return The response body as String.
      */
-    fun URI.post(body: String): String {
-        return HttpClient.newBuilder()
+    fun URI.post(body: String): String = tryOrRuntimeException {
+        HttpClient.newBuilder()
             .build()
             .send(
                 HttpRequest.newBuilder(this)
