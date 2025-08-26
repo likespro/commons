@@ -14,6 +14,7 @@
 - Add `Entity` interface to represent an entity
 - Add `Aggregate` interface to represent an aggregation
 - Add `Validatable` interface to represent a validatable object
+- Add `Iteration` Value class which represents an iteration number (starting from 0)
 `reflection` module:
 - `decodeObject()` now auto-validates the object if it implements `Validatable`
 ### Fixed Bugs
