@@ -47,6 +47,8 @@ class EncodableResult<T> private constructor (
     val isFailure: Boolean
         get() = !isSuccess
 
+    class UnknownFailureException(message: String = "Unknown failure") : RuntimeException(message)
+
     companion object {
         /**
          * Creates a new EncodableResult instance representing a success.
@@ -74,10 +76,31 @@ class EncodableResult<T> private constructor (
          * Creates a new EncodableResult instance representing a failure.
          *
          * @param exception The exception to be wrapped in the result.
+         * @param metadata Optional metadata to be associated with the result.
          * @return A new EncodableResult instance representing a failure.
          */
-        fun <T> failure(exception: Throwable): EncodableResult<T> {
+        fun <T> failure(exception: Throwable, metadata: Map<String, Any?> = emptyMap()): EncodableResult<T> {
             return EncodableResult(null, exception.wrap())
+        }
+
+        /**
+         * Executes the given [block] and captures its result or exception within an [EncodableResult].
+         * If the [block] executes successfully, its result is encapsulated as a success.
+         * If the [block] throws an exception, the exception is wrapped and encapsulated as a failure.
+         *
+         * @param metadata Optional metadata to be associated with the result.
+         * @param block The lambda to be executed that provides the result.
+         * @return An [EncodableResult] instance representing either a success or a failure, along with the provided or default metadata.
+         */
+        fun <T> runCatching(
+            metadata: Map<String, Any?> = emptyMap(),
+            block: () -> T
+        ): EncodableResult<T> {
+            return try {
+                success(block(), metadata)
+            } catch (e: Throwable) {
+                failure(e.wrap(), metadata)
+            }
         }
     }
 
@@ -156,6 +179,21 @@ class EncodableResult<T> private constructor (
      */
     fun applyExceptionDetailsConfiguration(configuration: WrappedException.DetailsConfiguration): EncodableResult<T> = this.apply {
         failure?.applyDetailsConfiguration(configuration)
+    }
+
+    /**
+     * Converts the current [EncodableResult] instance into a Kotlin [Result] type.
+     * If the [EncodableResult] represents a success, a successful [Result] is returned containing the value.
+     * If the [EncodableResult] represents a failure, a failed [Result] is returned containing the exception.
+     *
+     * @return A [Result] instance containing the success value or the failure exception.
+     */
+    fun toResult(): Result<T> {
+        return if (isSuccess) {
+            Result.success(value as T)
+        } else {
+            Result.failure(failure?.toException() ?: UnknownFailureException())
+        }
     }
 
     override fun equals(other: Any?): Boolean {
