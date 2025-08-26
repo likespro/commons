@@ -22,6 +22,7 @@ import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import eth.likespro.commons.misc.ExceptionUtils.tryOrRuntimeException
 import eth.likespro.commons.models.Validatable
 import eth.likespro.commons.reflection.ReflectionUtils.getType
 import java.io.IOException
@@ -179,8 +180,8 @@ object ObjectEncoding {
      *
      * @return The string representation of the object.
      */
-    fun Any?.encodeObject(): String {
-        return gson.toJson(this)
+    fun Any?.encodeObject(): String = tryOrRuntimeException {
+        gson.toJson(this)
     }
 
     /**
@@ -197,7 +198,7 @@ object ObjectEncoding {
      * @param type The type of the object to decode.
      * @return The decoded object.
      */
-    fun String.decodeObject(type: Type): Any? {
-        return gson.fromJson(this, type)
+    fun String.decodeObject(type: Type): Any? = tryOrRuntimeException {
+        gson.fromJson(this, type)
     }
 }
