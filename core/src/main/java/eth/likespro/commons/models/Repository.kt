@@ -5,9 +5,9 @@ interface Repository<Entity : eth.likespro.commons.models.Entity<ID>, ID : Any> 
 
     suspend fun isExisting(id: ID): Boolean
 
-    suspend fun findAll(): List<Entity>
+    suspend fun findAll(): List<Entity> = findAll(Pagination.ALL)
 
-    suspend fun findAll(pagination: Pagination): Pagination.Result<Entity>
+    suspend fun findAll(pagination: Pagination): List<Entity>
 
     suspend fun create(entity: Entity): Entity
 

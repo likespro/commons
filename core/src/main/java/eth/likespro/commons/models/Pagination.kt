@@ -2,6 +2,7 @@ package eth.likespro.commons.models
 
 import eth.likespro.commons.models.value.Timestamp
 import kotlinx.serialization.Serializable
+import kotlin.math.min
 
 @Serializable
 data class Pagination(
@@ -12,7 +13,7 @@ data class Pagination(
     val sort: Sort? = null
 ) {
     class PaginationIsInvalidException(override val message: String) : RuntimeException()
-    class TooManyItemsRequestedException(override val message: String) : RuntimeException()
+    class TooManyItemsRequestedException(override val message: String = "Too many items requested. Limit is 1000") : RuntimeException()
 
     init {
         if(page < 0)
@@ -37,15 +38,21 @@ data class Pagination(
         val to: Timestamp
     )
 
-    @Serializable
-    open class Result<T : Any>(
-        val items: List<T>,
-        val total: Long
-    )
+    val offset get() = page * itemsPerPage.toLong()
 
     companion object {
         val ALL = Pagination(0, Int.MAX_VALUE)
+
+        fun <T> List<T>.applyPagination(pagination: Pagination): List<T> = if(pagination.offset > size) {
+            emptyList()
+        } else {
+            val end = min(pagination.offset + pagination.itemsPerPage, size.toLong())
+            subList(pagination.offset.toInt(), end.toInt())
+        }
     }
 
-    val offset get() = page * itemsPerPage.toLong()
+    fun next() = copy(page = page + 1)
+
+    fun hasPrevious() = page > 0
+    fun previous() = copy(page = page - 1)
 }
