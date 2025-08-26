@@ -11,6 +11,7 @@
 - Add `randomBase64()` method to generate random Base64 of the specified length
 - Add `Value` interface to represent a value in wrappers
 - Add `Entity` interface to represent an entity
+- Add `Aggregate` interface to represent an aggregation
 - Add `Validatable` interface to represent a validatable object
 `reflection` module:
 - `decodeObject()` now auto-validates the object if it implements `Validatable`
