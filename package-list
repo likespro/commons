@@ -2,15 +2,20 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 
 module:core
+eth.likespro.commons.models
+eth.likespro.commons.models.entity
+eth.likespro.commons.models.value
 eth.likespro.commons.numeric
 module:core-mit
 eth.likespro.commons.console
 eth.likespro.commons.json
+eth.likespro.commons.misc
 eth.likespro.commons.models
 eth.likespro.commons.multithreading
 eth.likespro.commons.numeric
 module:network
 eth.likespro.commons.network
+eth.likespro.commons.network.models
 module:reflection
 eth.likespro.commons.reflection
 module:security
