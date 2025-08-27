@@ -27,7 +27,7 @@ package eth.likespro.commons.console
 import kotlin.math.min
 
 object ConsoleUtils {
-    class TotalCannotBeZero : Exception("Total amount of work to be done cannot be zero")
+    class TotalCannotBeZero : RuntimeException("Total amount of work to be done cannot be zero")
 
     /**
      * Prints a progress indicator in the console.

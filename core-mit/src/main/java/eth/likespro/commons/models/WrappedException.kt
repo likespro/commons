@@ -198,7 +198,7 @@ data class WrappedException(
      *
      * @return The WrappedExceptionException.
      */
-    fun toException(): Exception {
+    fun toException(): RuntimeException {
         return Exception(this)
     }
 
