@@ -47,10 +47,10 @@ This Kotlin library contains common utilities used by likespro. Explore document
 ## Quickstart
 With Gradle, in `dependencies {}` block
 ```kotlin
-implementation("io.github.likespro:commons-core:3.0.0") // Core features of the library - EncodableResult, .toHex, etc.
-implementation("io.github.likespro:commons-network:3.0.0") // Network features - HTTP Utils, DNS Utils, etc.
-implementation("io.github.likespro:commons-reflection:3.0.0") // Java/Kotlin Reflection features - Object Encoding, .boxed(), getType(), etc.
-implementation("io.github.likespro:commons-security:3.0.0") // Security features - Hash Utils, Encrpyting, etc.
+implementation("io.github.likespro:commons-core:3.1.0") // Core features of the library - EncodableResult, .toHex, etc.
+implementation("io.github.likespro:commons-network:3.1.0") // Network features - HTTP Utils, DNS Utils, etc.
+implementation("io.github.likespro:commons-reflection:3.1.0") // Java/Kotlin Reflection features - Object Encoding, .boxed(), getType(), etc.
+implementation("io.github.likespro:commons-security:3.1.0") // Security features - Hash Utils, Encrpyting, etc.
 ```
 
 ## ⚠️ Note
