@@ -19,7 +19,6 @@
 - Make `org.json:json` an `api` dependency instead of `implementation`
 `reflection` module:
 - `decodeObject()` now auto-validates the object if it implements `Validatable`
-- Wrapped `ObjectEncoding` exceptions into `RuntimeException`
 `network` module:
 - Add `RESTAPIResponse` class to turn EncodableResult into REST API compatible form
 - Add `EncodableResult.toResponse()` method to convert EncodableResult into REST API compatible form

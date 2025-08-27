@@ -180,9 +180,7 @@ object ObjectEncoding {
      *
      * @return The string representation of the object.
      */
-    fun Any?.encodeObject(): String = tryOrRuntimeException {
-        gson.toJson(this)
-    }
+    fun Any?.encodeObject(): String = gson.toJson(this)
 
     /**
      * Decodes a string to an object of the specified type.
@@ -190,7 +188,8 @@ object ObjectEncoding {
      * @param T The type of the object to decode.
      * @return The decoded object.
      */
-    inline fun<reified T> String.decodeObject(): T = this.decodeObject(getType<T>()) as T //awd
+    @Throws(JsonParseException::class)
+    inline fun<reified T> String.decodeObject(): T = this.decodeObject(getType<T>()) as T
 
     /**
      * Decodes a string to an object of the specified type.
@@ -198,7 +197,6 @@ object ObjectEncoding {
      * @param type The type of the object to decode.
      * @return The decoded object.
      */
-    fun String.decodeObject(type: Type): Any? = tryOrRuntimeException {
-        gson.fromJson(this, type)
-    }
+    @Throws(JsonParseException::class)
+    fun String.decodeObject(type: Type): Any? = gson.fromJson(this, type)
 }
